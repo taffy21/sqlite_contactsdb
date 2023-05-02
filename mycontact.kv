@@ -1,0 +1,101 @@
+#: import Factory kivy.factory.Factory
+
+MyContactBox:
+
+<MyContactBox>:
+    id: contact_box
+    orientation: "vertical"
+    search_results: list_view
+    canvas:
+        Color:
+            rgba: 0, 0.5, 0.5, 0.5
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: "horizontal"
+        size_hint_y: 0.6
+        Image:
+            source: "icon/logo.gif"
+            size_hint_x: 0.2
+        BoxLayout:
+            orientation: "vertical"
+            Label:
+                text: "Create New Contact"
+                size_hint_y: 0.3
+            GridLayout:
+                cols: 2
+                padding: [10, 10, 10, 10]
+                size_hint_y: 0.6
+                Label:
+                    text: "Name:"
+                TextInput:
+                    id: name_input
+                    multiline: False
+                Label:
+                    text: "Email:"
+                TextInput:
+                    id: email_input
+                    multiline: False
+                Label:
+                    text: "Number:"
+                TextInput:
+                    id: number_input
+                    multiline: False
+            Button:
+                id: add_contact
+                text: "Add Contact"
+                size_hint: 0.3, 0.1
+                pos_hint: {'center_x':0.6}
+                on_press:
+                    root.on_add_contact_contact_button_clicked()
+                    Factory.Success().open()
+
+
+    ViewList:
+        id: list_view
+        viewclass: 'SelectableLabel'
+        data: []
+        SelectableRecycleBoxLayout:
+            default_size: None, dp(30)
+            default_size_hint: 1, None
+            size_hint_y: None
+            height: self.minimum_height
+            orientation: 'vertical'
+
+    BoxLayout:
+        orientation: "horizontal"
+        size_hint_y: 0.1
+        Button:
+            id: delete_selected
+            text: "Delete Selected"
+            on_press:
+                root.delete_contacts()
+        Button:
+            id: modify_selected
+            text: "Modify Selected"
+            on_press:
+                root.modify_window()
+
+<ViewList>:
+
+
+<SelectableLabel>:
+    id: select_label
+    canvas.before:
+        Color:
+            rgba: (0.0, 0.9, .1, .3) if self.selected else (0, 0, 0, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<SelectableRecycleBoxLayout>:
+
+
+<Success@Popup>:
+    auto_dismiss: True
+    size_hint: 0.6, 0.5
+    pos_hint: {'x':0.2, 'top':0.9}
+    title: "Activity One"
+    Label:
+        text: "Successfully Logged"
